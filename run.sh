@@ -1,0 +1,14 @@
+python ../main.py\
+	--epochs 300\
+	--batch_size 16\
+	--learning-rate 2e-4\
+	--data_dir ../raw\
+	--number_of_gpu 1\
+	--local_rank -1\
+	--test_subject 59\
+	--save_dir test\
+	--model_type 0\
+	--output_dir test\
+	--eval_epochs 10\
+	--gradient_accumulation_steps 2\
+    --alpha 0.7
