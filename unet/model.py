@@ -16,8 +16,7 @@ class Dk_UNet_XR(nn.Module):
         self.encoding_channel = channel
         self.kernel = (3, 3) if size == 3 else (5, 5)
         self.padding = 1 if size == 3 else 2
-
-        #kernel size changed for the first layer
+        
         self.inc = DoubleConv(self.n_channels, 64)
         self.MaxPool1 = nn.MaxPool2d(2)
         self.down1 = DoubleConv(64, 96)
@@ -27,12 +26,11 @@ class Dk_UNet_XR(nn.Module):
         self.down3 = DoubleConv(128, 256)
         self.MaxPool4 = nn.MaxPool2d(2)
         self.down4 = DoubleConv(256, 512)
-        #more attention channels if using large
+       
         self.up1 = Attention_up_with_atlas_XR(160, 64, 32, 96)
         self.up2 = Attention_up_with_atlas_XR(224, 96, 64, 128)
         self.up3 = Attention_up_with_atlas_XR(384, 128, 96, 256)
         self.up4 = Attention_up_with_atlas_XR(768, 256, 128, 512)
-        #self.outc = OutConv(64, n_classes)
 
         #domain knowledge encoder
         self.encode_inc = DoubleConv(channel, 64, kernel=self.kernel, padding=self.padding)
@@ -49,7 +47,6 @@ class Dk_UNet_XR(nn.Module):
         self.encode_up2 = Up_X(256, 128, bilinear, kernel=self.kernel, padding=self.padding)
         self.encode_up3 = Up_X(128, 96, bilinear, kernel=self.kernel, padding=self.padding)
         self.encode_up4 = Up_X(96, 64, bilinear, kernel=self.kernel, padding=self.padding)
-        #self.final = Attention_block_atlas(64, 64, 32)
         self.final = Attention_fusion_XR(64, n_classes)
 
     def forward(self, x):
@@ -79,12 +76,6 @@ class Dk_UNet_XR(nn.Module):
         atlas5 = self.encode_MaxPool4(atlas4)
         atlas5 = self.encode_down4(atlas5)
 
-        #atlas_hist = plt.hist(atlas5.flatten().numpy(), alpha=0.5, label='atlas')
-        #normal_hist = plt.hist(x5.flatten().numpy(), alpha=0.5, label='normal')
-        #bins = np.linspace(0, 10, 100)
-        #_ = plt.hist([x5.flatten().numpy(), bins, atlas5.flatten().numpy()], alpha=0.5, label=['normal', 'atlas'])
-        #plt.legend(loc='upper right')
-        #plt.show()
         x = self.up4(x5, x4, atlas5)
         x_encode = self.encode_up1(atlas5, atlas4)
         x = self.up3(x, x3, atlas4)
@@ -94,7 +85,6 @@ class Dk_UNet_XR(nn.Module):
         x = self.up1(x, x1, atlas2)
         x_encode = self.encode_up4(x_encode, atlas1)
         logits = self.final(x, x_encode)
-        #logits = self.outc(x)
     
         return torch.sigmoid(logits)
         if self.n_classes > 1:
