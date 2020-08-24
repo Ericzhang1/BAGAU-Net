@@ -11,8 +11,6 @@ from sklearn import metrics as M
 testDir        = 'evaluation_result' # For example: '/data/Utrecht/0'
 participantDir = 'evaluation_result' # For example: '/output/teamname/0'
 
-
-
 def do():
     """Main function"""
     resultFilename = getResultFilename(participantDir)
