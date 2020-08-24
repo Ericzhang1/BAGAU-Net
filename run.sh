@@ -11,4 +11,4 @@ python ../main.py\
 	--output_dir test\
 	--eval_epochs 10\
 	--gradient_accumulation_steps 2\
-    --alpha 0.7
+    	--alpha 0.7
