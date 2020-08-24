@@ -4,7 +4,7 @@ This repository contains implementation code for the paper "Brain Atlas Guided A
 
 ## Model Architecture
 
-![alt text](model.jpg)
+<img src="Model.jpg" width="800" />
 
  Brain atlas guided attention U-Net (BAGAU-Net) that consists of two separate encoding-decoding paths. As shown in above, the upper path is a U-Net like architecture designed to extract semantic information from the image itself. The lower path is the atlas encoding path where the spatially registered atlas image is input to help guide the decoding process in the segmentation path. Moreover, we designed a multi-input attention module (MAM) and attention fusion module (AFM) to effectively combine the information between the two paths during the decoding process of segmentation path based on the attention gate (AG) as introduced in [attention U-Net](https://arxiv.org/abs/1804.03999).
 
