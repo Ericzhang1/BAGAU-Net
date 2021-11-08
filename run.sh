@@ -1,4 +1,4 @@
-python ../main.py\
+python ../train.py\
 	--epochs 300\
 	--batch_size 16\
 	--learning-rate 2e-4\
